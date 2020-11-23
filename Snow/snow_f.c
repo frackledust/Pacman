@@ -69,7 +69,6 @@ void Snow_Print(dynarray* snow, SDL_Renderer* renderer, SDL_Texture *snow_pic, i
 
     for (int i = 0; i < snow->size; i++)
     {   
-        printf("Print %d from %d \n", i, snow->size);
         snowflake = snow->items[i];
 
         SDL_Rect snow_rect = {
