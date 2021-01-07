@@ -10,8 +10,8 @@
 #include "pac_board.h" //isNotWall, equal, get_new_position
 #include "pac_links.h"
 
-#define TIME_TO_MOVE_NEW_GHOST 7000
-#define NUMBER_OF_GHOSTS 4
+#define TIME_TO_MOVE_NEW_GHOST 7000 //ms
+#define MAX_NUM_OF_GHOSTS 4
 
 typedef struct Ghost
 {
@@ -21,6 +21,9 @@ typedef struct Ghost
     int last_row;
     int last_col;
 
+    int spawn_row;
+    int spawn_col;
+
 } Ghost;
 
 typedef struct Ghosts
@@ -29,19 +32,23 @@ typedef struct Ghosts
     int number;
     int moving_ghosts;
     float spawn_counter;
+    
     bool found_pacman;
+    bool chased;
 
     SDL_Texture *texture;
     Mix_Chunk *mouth_sound;
+    Mix_Chunk *eaten_sound;
 
 } Ghosts;
 
 void ghost_init(Ghost *ghost, int row, int col);
 void ghosts_init(SDL_Renderer *renderer, Ghosts *ghosts, int number);
 void ghosts_free(Ghosts *ghosts);
+void ghost_reset(Ghosts *ghosts, int i);
 
-void ghosts_update(Ghosts *ghosts, Grid *board, int get_to_row, int get_to_col);
-void ghost_urgent_move(Ghost *ghost, Grid *board, int get_to_row, int get_to_col);
+void ghosts_update(Ghosts *ghosts, Grid *board, int get_to_row, int get_to_col, int *score);
+void ghost_urgent_move(Ghost *ghost, Grid *board, int get_to_row, int get_to_col, bool chased);
 void ghost_random_move(Ghost *ghost, Grid *board);
 bool ghost_moved(Ghost *ghost, int row, int col, Grid *board);
 bool successful_catch(Ghost *ghost, int row, int col);

@@ -13,5 +13,6 @@ typedef struct Grid
 
 } Grid;
 
-int grid_load(Grid *grid); //
+int grid_load(Grid *grid);
+void edge_guard(int *row, int *col, Grid *grid);
 void grid_print(Grid grid); // Prints the grid in console

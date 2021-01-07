@@ -15,6 +15,8 @@ void pacman_init(SDL_Renderer *renderer, Pacman *pacman, int row, int col)
 
     pacman->extra_sound = Mix_LoadWAV(EXTRA_SOUND);
     assert(pacman->extra_sound);
+
+    pacman->chasing_counter = 0;
 }
 
 void pacman_free(Pacman *pacman)
@@ -29,7 +31,6 @@ void pacman_set_to_location(Pacman *pacman, int row, int col)
     pacman->col = col;
     pacman->direction = LEFT;
     pacman->open = 1;
-    pacman->mouth_counter = 0;
 }
 
 void pacman_update(Pacman *pacman, Grid *board)
@@ -38,6 +39,7 @@ void pacman_update(Pacman *pacman, Grid *board)
     int col = pacman->col;
 
     get_new_position(&row, &col, pacman->direction);
+    edge_guard(&row, &col, board);
 
     pacman_try_move(row, col, board, pacman);
 }
@@ -45,12 +47,14 @@ void pacman_update(Pacman *pacman, Grid *board)
 void pacman_try_move(int row, int col, Grid *grid, Pacman *pacman)
 {
     char symbol = grid->items[row * grid->cols + col];
+    //Try move
     if (symbol != WALL)
     {
         pacman->row = row;
         pacman->col = col;
     }
-
+    
+    //Score updates
     if (symbol == COIN)
     {
         pacman->score += 1;
@@ -66,6 +70,8 @@ void pacman_try_move(int row, int col, Grid *grid, Pacman *pacman)
         pacman->open = 0;
 
         Mix_PlayChannel(-1, pacman->extra_sound, 0);
+
+        pacman->chasing_counter = CHASING_MAX;
     }
 }
 

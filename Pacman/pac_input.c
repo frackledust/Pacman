@@ -33,7 +33,30 @@ int grid_load(Grid *grid)
 
     //Free
     fclose(input);
-    return 0; 
+    return 0;
+}
+
+void edge_guard(int *row, int *col, Grid *grid)
+{
+    while (*row >= grid->rows)
+    {
+        *row = *row - grid->rows;
+    }
+
+    while (*row < 0)
+    {
+        *row = *row + grid->rows;
+    }
+
+    while (*col >= grid->cols)
+    {
+        *col = *col - grid->cols;
+    }
+
+    while (*col < 0)
+    {
+        *col = *col + grid->cols;
+    }
 }
 
 void grid_print(Grid grid)

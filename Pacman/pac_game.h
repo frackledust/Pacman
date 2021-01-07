@@ -10,12 +10,11 @@
 #include "pac_ghost.h"    // ghosts_init, ghost_init
 #include "pac_links.h"
 
-#define W_WIDTH 850 //in pixels
-#define W_HEIGHT 600
-#define STATS_WIDTH 240
+#define W_WIDTH 860 //pixels
+#define W_HEIGHT 600 //pixels
+#define STATS_WIDTH 240 //pixels
 
-#define INTRO_TIME 4 //in s
-#define MOVE_SPEED 500 // in ms
+#define MOVE_SPEED 500 //ms
 
 typedef struct Game
 {

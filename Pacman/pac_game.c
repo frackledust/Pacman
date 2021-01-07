@@ -16,7 +16,7 @@ int game_init(Game *game)
     //Load input
     if (grid_load(&game->board))
     {
-        printf("Gameboard wasn't found.");
+        printf("Gameboard wasn't found. \n");
         return 1;
     }
 
@@ -39,7 +39,7 @@ int game_init(Game *game)
     game->unit_height = W_HEIGHT / game->board.rows;
     if (!grid_read(game))
     {
-        printf("Gameboard is not suitable.");
+        printf("Gameboard is not suitable. \n");
         game_free(game);
         return 1;
     }
@@ -115,7 +115,16 @@ void game_update(Game *game, float delta)
             //Change ghosts location and check if they found pacman
             if (game->ghosts.number > 0)
             {
-                ghosts_update(&game->ghosts, &game->board, game->pacman.row, game->pacman.col);
+                if (game->pacman.chasing_counter > 0)
+                {
+                    game->ghosts.chased = true;
+                }
+                else
+                {
+                    game->ghosts.chased = false;
+                }
+
+                ghosts_update(&game->ghosts, &game->board, game->pacman.row, game->pacman.col, &game->pacman.score);
             }
         }
 
@@ -142,6 +151,16 @@ void counters_update(Game *game, float delta)
         {
             game->ghosts.moving_ghosts++;
             game->ghosts.spawn_counter = 0;
+        }
+    }
+
+    //chasing counter
+    if (game->pacman.chasing_counter > 0)
+    {
+        game->pacman.chasing_counter -= delta;
+        if (game->pacman.chasing_counter < 0)
+        {
+            game->pacman.chasing_counter = 0;
         }
     }
 }
@@ -193,7 +212,7 @@ int grid_read(Game *game)
     Grid grid = game->board;
 
     //Ghosts init
-    ghosts_init(game->ctx.renderer, &game->ghosts, NUMBER_OF_GHOSTS);
+    ghosts_init(game->ctx.renderer, &game->ghosts, MAX_NUM_OF_GHOSTS);
     int ghost_count = 0;
 
     int pacman_count = 0;
@@ -218,7 +237,7 @@ int grid_read(Game *game)
                 break;
 
             case 'G':
-                if (ghost_count < NUMBER_OF_GHOSTS)
+                if (ghost_count < MAX_NUM_OF_GHOSTS)
                 {
                     ghost_init(&game->ghosts.items[ghost_count], r, c);
                     ghost_count++;
@@ -247,7 +266,7 @@ void stats_render(SDL_Renderer *renderer, TTF_Font *font, Pacman *pacman)
     snprintf(buffer, sizeof(buffer), "Score: %d Lifes: %d", pacman->score, pacman->lifes);
 
     SDL_Rect text_rect = {
-        .x = W_WIDTH - (STATS_WIDTH + 20),
+        .x = W_WIDTH - (STATS_WIDTH + 15),
         .y = 100,
         .w = STATS_WIDTH,
         .h = 100};
@@ -256,7 +275,7 @@ void stats_render(SDL_Renderer *renderer, TTF_Font *font, Pacman *pacman)
     //Print info
     snprintf(buffer, sizeof(buffer), "Press SPACE to start / stop");
     SDL_Rect text2_rect = {
-        .x = W_WIDTH - (STATS_WIDTH + 20),
+        .x = W_WIDTH - (STATS_WIDTH + 15),
         .y = 200,
         .w = STATS_WIDTH,
         .h = 50};

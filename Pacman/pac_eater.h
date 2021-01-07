@@ -8,7 +8,8 @@
 #include "pac_board.h" //Wall signs
 #include "pac_links.h"
 
-#define MOUTH_SPEED 200
+#define MOUTH_SPEED 200 //ms
+#define CHASING_MAX 10000 //ms
 
 typedef struct Pacman
 {
@@ -23,7 +24,8 @@ typedef struct Pacman
     Mix_Chunk *mouth_sound;
     Mix_Chunk *extra_sound;
     int open;
-    float mouth_counter;
+
+    float chasing_counter; // how long can eat ghosts (in ms)
 
 } Pacman;
 
