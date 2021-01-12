@@ -3,6 +3,13 @@ Pavlína Smolková (07.01.2021)
 
 Jednoduchá SDL hra Pacman - postava se snaží sbírat body a vyhnout se duchům
 
+Instalace (ze složky Build)
+cmake ../
+make
+./pacman
+
+Pozn.: pro změnu mapy třeba změnit link v souboru pac_links.h a znovu použít příkaz make
+
 Funkce:
 1) načtení mapy z txt souboru   - první dvě čísla = počet řádků a počet sloupců
                                 (počet řádků by neměl být vyšší než počet sloupců)
@@ -37,7 +44,7 @@ Seznam souborů:
     /CMakeLists.txt
 
     /pac_main.c                     obsahuje hlavní herní smyčku
-    /game_links.h                   obsahuje definice cest k assets souborům
+    /pac_links.h                    obsahuje definice cest k assets souborům
     /pac_game.c, /pac_game.h        funkce obsažené v mainu (iniciace hry, update, render, free)
     /pac_input.c, /pac_input.h      nahrání hracího pole z txt souboru
     /pac_board.c, /pac_board.h      funkce na interakce s hrací plochou
