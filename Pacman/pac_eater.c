@@ -50,6 +50,8 @@ void pacman_try_move(int row, int col, Grid *grid, Pacman *pacman)
     //Try move
     if (symbol != WALL)
     {
+        pacman->last_row = pacman->row;
+        pacman->last_col = pacman->col;
         pacman->row = row;
         pacman->col = col;
     }

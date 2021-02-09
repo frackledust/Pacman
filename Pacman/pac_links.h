@@ -17,4 +17,4 @@
 #define GHOST_DEATH_SOUND "../assets/pacman_eatghost.wav"
 
 //pac_input
-#define MAP "../assets/map.txt"
+#define MAP "../assets/map_simple.txt"

@@ -15,6 +15,8 @@ typedef struct Pacman
 {
     int row;
     int col;
+    int last_row;
+    int last_col;
     char direction;
 
     int score;

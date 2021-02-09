@@ -19,7 +19,7 @@ int main()
 
         game_events(&game);
 
-        if (game.pacman.lifes > 0 && game.started == true)
+        if (game.pacman.lifes > 0 && game.started)
         {
             game_update(&game, delta_ms);
             game_render(&game);

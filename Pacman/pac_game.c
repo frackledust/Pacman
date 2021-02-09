@@ -115,15 +115,7 @@ void game_update(Game *game, float delta)
             //Change ghosts location and check if they found pacman
             if (game->ghosts.number > 0)
             {
-                if (game->pacman.chasing_counter > 0)
-                {
-                    game->ghosts.chased = true;
-                }
-                else
-                {
-                    game->ghosts.chased = false;
-                }
-
+                game->ghosts.chased = game->pacman.chasing_counter > 0;
                 ghosts_update(&game->ghosts, &game->board, game->pacman.row, game->pacman.col, &game->pacman.score);
             }
         }
@@ -147,10 +139,10 @@ void counters_update(Game *game, float delta)
     if (game->ghosts.moving_ghosts < game->ghosts.number)
     {
         game->ghosts.spawn_counter += delta;
-        if (game->ghosts.spawn_counter > TIME_TO_MOVE_NEW_GHOST)
+        while (game->ghosts.spawn_counter > TIME_TO_MOVE_NEW_GHOST)
         {
             game->ghosts.moving_ghosts++;
-            game->ghosts.spawn_counter = 0;
+            game->ghosts.spawn_counter -= TIME_TO_MOVE_NEW_GHOST;
         }
     }
 
@@ -167,7 +159,7 @@ void counters_update(Game *game, float delta)
 
 void game_reset(Game *game)
 {
-    free(game->ghosts.items);
+    ghosts_free(&game->ghosts);
     grid_read(game);
     game_render(game);
     game->started = false;
